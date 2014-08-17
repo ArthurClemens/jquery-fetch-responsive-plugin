@@ -1,0 +1,18 @@
+.container figure.my-image {
+    display: block;
+    margin: 0 0 20px 0;
+    width: 100%;
+}
+.container figure.my-image img {
+    width: 100%;
+}
+
+.cf:before,
+.cf:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.cf:after {
+    clear: both;
+}

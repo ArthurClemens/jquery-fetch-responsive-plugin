@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset='utf-8'>
+	<title>ArthurClemens/jquery-fetch-responsive-plugin @ GitHub</title>
+    <link rel="stylesheet" href="css/docs.css">
+    <link rel="stylesheet" href="css/demo.css">
+    <link rel="stylesheet" href="css/demo3.css">
+</head>
+<body class="demo3">
+	<span id="top"></span>
+
+	<a href="https://github.com/ArthurClemens/jquery-fetch-responsive-plugin"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+
+	<div class="container">
+		<h1>jQuery Fetch Responsive Image plugin</h1>
+		<h2>Demo 3: create widths from range</h2>
+	</div>
+	
+	<div class="container">
+<pre class="main">
+&lt;img class="my-image" data-range="320-1120" data-step-size="80" />
+</pre>
+    </div>
+    
+    <div class="container">
+		<p>
+		    Passing a range automatically generates a list of widths (compared to the hardcoded list with parameter <code>widths</code> in demo 1). Optional parameter <code>step-size</code> (default 160) is used to calculate the number of size steps between the range min and max values.
+		</p>
+		<p>
+		    The demo on this page generates new images using a canvas, simulating server generated images.
+		    
+		    Parameter <code>ratio</code> is passed to calculate the new image height. In the demo the received height is used to crop the generated image:
+		    
+<pre class="main">
+&lt;img class="my-image" data-range="320-1120" data-step-size="80" data-ratio="3" />
+</pre>
+		</p>
+    </div>
+
+    <div class="container note">
+        <div class="note-content">
+            Input data: <code id="image-input"></code><br />
+            Received : <code id="data-received"></code><br />
+            Image updated: <code id="update-time"></code>
+        </div>
+    </div>
+    <div class="container">
+		<img class="my-image" data-range="320-1120" data-step-size="80" data-ratio="3" />
+	</div>
+	
+	<div class="container container-list">
+	    <h3>Demos</h3>
+	    <ul>
+	        <li>
+                <a href="demo1.html">Demo 1: list of widths</a>
+            </li>
+            <li>
+                <a href="demo2.html">Demo 2: detect breakpoint changes</a>
+            </li>
+            <li>
+                Demo 3: create widths from range
+            </li>
+            <li>
+                <a href="demo4.html">Demo 4: stress test</a>
+            </li>
+        </ul>
+	</div>
+	
+    <div class="container">
+		<div class="footer">
+			Get the source code on GitHub : <a href="https://github.com/ArthurClemens/jquery-fetch-responsive-plugin">ArthurClemens/jquery-fetch-responsive-plugin</a>
+		</div>
+	</div>
+	
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="js/jquery.fetch-responsive.min.js" type="text/javascript"></script>
+	<script src="js/demo3.js" type="text/javascript"></script>
+</body>
+</html>

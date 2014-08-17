@@ -1,0 +1,16 @@
+.container {
+    margin: 0 auto;
+    width: auto;
+}
+.container + .container {
+    margin-top: 20px;
+}
+.container.full-width {
+    margin-left: -20px;
+    margin-right: -20px;
+}   
+
+.container .my-image {
+    display: block;
+    margin: 20px auto;
+}

@@ -1,0 +1,53 @@
+/* Modern browsers */
+head {font-family:"XS";}
+/* Opera */
+body:after {content:"XS"; display:none;}
+
+.container .my-image {
+    width: 320px;
+}
+
+@media (min-width: 480px) {
+    head {font-family:"S";}
+	body:after{content:"S";}
+	
+    .container .my-image {
+        width: 480px;
+    }
+}
+
+@media (min-width: 640px) {
+    head {font-family:"M";}
+	body:after {content:"M";}
+	
+    .container .my-image {
+        width: 640px;
+    }
+}
+
+@media (min-width: 800px) {
+    head {font-family:"L";}
+	body:after {content:"L";}
+	
+    .container .my-image {
+        width: 800px;
+    }
+}
+
+@media (min-width: 960px) {
+    head {font-family:"XL";}
+	body:after {content:"XL";}
+	
+    .container .my-image {
+        width: 960px;
+    }
+}
+
+@media (min-width: 1120px) {
+    head {font-family:"XXL";}
+	body:after {content:"XXL";}
+	
+    .container .my-image {
+        width: 1120px;
+    }
+}

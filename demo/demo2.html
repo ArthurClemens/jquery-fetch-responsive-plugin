@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset='utf-8'>
+	<title>ArthurClemens/jquery-fetch-responsive-plugin @ GitHub</title>
+    <link rel="stylesheet" href="css/docs.css">
+    <link rel="stylesheet" href="css/demo.css">
+    <link rel="stylesheet" href="css/demo2.css">
+</head>
+<body class="demo2">
+	<span id="top"></span>
+
+	<a href="https://github.com/ArthurClemens/jquery-fetch-responsive-plugin"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+
+	<div class="container">
+		<h1>jQuery Fetch Responsive Image plugin</h1>
+		<h2>Demo 2: detect breakpoint changes</h2>
+    </div>
+    
+	<div class="container">
+<pre class="main">
+&lt;img class="my-image" data-media-query="true" />
+</pre>
+    </div>
+    
+    <div class="container">
+		<p>
+		    To keep all size information in one central place (CSS), this parameter calls upon a technique outlined by <a href="http://www.brettjankord.com/2012/11/15/syncing-javascript-with-your-active-media-query/">Brett Jankord</a> to keep track of the current media query in Javascript.
+        </p>
+        <p>
+            This requires 2 CSS declarations for each media query (to satisfy modern browsers and Opera):
+        </p>
+<pre><span class="highlight">
+head {font-family:"XS";}
+body:after {content:"XS"; display:none;}</span>
+.my-image {width: 320px;}
+
+@media (min-width: 480px) {<span class="highlight">
+    head {font-family:"S";}
+    body:after{content:"S";}</span>
+    .my-image {width: 480px;}
+}
+
+etcetera
+</pre>
+        <p>
+            When option <code>media-query</code> is set to true and the current media query has changed, the width of the element is detected (using parameter function <code>get-width</code> or else <code>$(el).width()</code>), and that width is passed to the server:
+		</p>
+
+<pre>
+var IMAGE_URL = "img/orion-{width}.jpg";
+
+$.responsive({
+    urlSource: function(data) {
+        var width = data.width;
+        var url = IMAGE_URL.replace("{width}", width);
+        return url;
+    }
+});
+</pre>
+    </div>
+
+    <div class="container note">
+        <div class="note-content">
+            Input data: <code id="image-input"></code><br />
+            Maps to: <code id="image-source"></code><br />
+            Received: <code id="input-time"></code>
+        </div>
+    </div>
+    <div class="container img-container full-width">
+		<img class="my-image" data-media-query="true" />
+	</div>
+	
+	<div class="container container-list">
+	    <h3>Demos</h3>
+	    <ul>
+	        <li>
+                <a href="demo1.html">Demo 1: list of widths</a>
+            </li>
+            <li>
+                Demo 2: detect breakpoint changes
+            </li>
+            <li>
+                <a href="demo3.html">Demo 3: create widths from range</a>
+            </li>
+            <li>
+                <a href="demo4.html">Demo 4: stress test</a>
+            </li>
+        </ul>
+	</div>
+	
+    <div class="container">
+		<div class="footer">
+			Get the source code on GitHub : <a href="https://github.com/ArthurClemens/jquery-fetch-responsive-plugin">ArthurClemens/jquery-fetch-responsive-plugin</a>
+		</div>
+	</div>
+	
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="js/jquery.fetch-responsive.min.js" type="text/javascript"></script>
+	<script src="js/demo2.js" type="text/javascript"></script>
+</body>
+</html>
