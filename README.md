@@ -124,8 +124,11 @@ It requires 2 CSS declarations for each media query (to satisfy both modern brow
     
     etcetera
     
+At a media query change, the width of the element is detected and passed to the server.
 
-At a media query change, the width of the element is detected (using parameter function `getWidth` or else `$(el).width()`) and passed to the server.
+For the calculation of the current size, by default the css value for <code>max-width</code> is taken with fallback <code>$el.width()</code>; this can be overridden with function <code>getWidth</code>.<br />
+Using <code>max-width</code> leaves the <code>width</code> attribute for stretching the image to fit the parent container.
+
             
 The corresponding media query identifier is also sent in data attribute `sizeId`.
 
@@ -275,14 +278,21 @@ Example:
 
 ### getWidth
 
-*function* param *$el*
+*function* params *$el, data*
 
-Function to return the element width if `$(el).width()` would result in a wrong size (for instance when the image width is set to a percentage).
+Function to return the element width if `$el.css("max-width")` or `$el.width()` would result in a wrong size (for instance when the image width is set to a percentage).
+
+`data` contains:
+
+* width
+* height
+* sizeId
+* url
 
 Example:
 
     $.responsive({
-        getWidth: function($el) {
+        getWidth: function($el, data) {
             return $el.parent().width();
         }
     });

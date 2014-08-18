@@ -1,7 +1,7 @@
 /*
 Fetch Responsive Image jQuery plugin
 Mediator between user interface and webserver, with the goal to get images sized to match the current state of the interface.
-Version 0.1
+Version 0.1.1
 (c) 2014 Arthur Clemens arthurclemens@gmail.com
 Released under MIT licence
 https://github.com/ArthurClemens/jquery-fetch-responsive-plugin
@@ -196,11 +196,7 @@ https://github.com/ArthurClemens/jquery-fetch-responsive-plugin
         windowWidth = Math.round($(window).width());
         if (options.mediaQuery) {
             sizeId = getMediaQuery();
-            if (options.getWidth) {
-                width = options.getWidth($el);
-            } else {
-                width = $el.width();
-            }
+            width = options.getWidth($el, sendData);
         } else if (options.widths) {
             width = widthForWidthList(options.widths, windowWidth);
             sizeId = width.toString();
@@ -339,7 +335,9 @@ https://github.com/ArthurClemens/jquery-fetch-responsive-plugin
         widths: undefined,
         ratio: undefined,
         update: undefined,
-        getWidth: undefined,
+        getWidth: function($el, _data) {
+            return parseInt($el.css("max-width"), 10) || $el.width();
+        },
         mediaQuery: undefined
     };
 
