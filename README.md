@@ -283,7 +283,7 @@ Example:
 
     $.responsive({
         getWidth: function($el) {
-            $el.parent().width();
+            return $el.parent().width();
         }
     });
 
