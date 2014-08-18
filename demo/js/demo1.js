@@ -5,7 +5,6 @@ jQuery(document).ready(function($) {
     // this settings object can also be passed in the element call below
     $.responsive({
         urlSource: function(data) {
-            console.log("urlSource", data);
             // for the demo we will use the list of locally stored images
             // this is easier with a webserver that generates images
             var url = IMAGE_URL.replace("{width}", data.width);
