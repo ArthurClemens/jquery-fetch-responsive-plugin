@@ -76,6 +76,7 @@ Optionally set global options first, see below.
 
 ### All options
 
+* [disableHighResolution](#disablehighresolution)
 * [getWidth](#getwidth)
 * [highResolution](#highresolution)
 * [mediaQuery](#mediaquery)
@@ -246,7 +247,7 @@ Example URL:
 
 #### urlSource as Javascript function
 
-*function* - params *data, $el*
+*function* - params *data, $el* - return *string*
 
 This function is called to fetch the image url instead. 
 
@@ -296,7 +297,7 @@ Example:
 
 ### getWidth
 
-*function* params *$el, data*
+*function* params *$el, data* - return *integer*
 
 Function to return the element width if `$el.css("max-width")` or `$el.width()` would result in a wrong size (for instance when the image width is set to a percentage).
 
@@ -318,7 +319,7 @@ Example:
 
 ### highResolution
 
-*boolean* or *"auto"* or *function*
+*boolean* or *"auto"*
 
 #### highResolution as boolean
 
@@ -332,19 +333,23 @@ Detect if the display is a high resolution and pass the result to the server.
 
     <img data-high-resolution="auto" />
 
-#### highResolution as function
+### disableHighResolution
 
-*function* - params *data, $el*
+*function* - params *data, $el* - return *boolean*
 
-In options object only. Use a function to conditionally request a high resolution image. For instance for large screen sizes high res can be disabled to prevent large downloads.
+In options object only. Use this function to conditionally request a high resolution image, and to disable it for large screens (to prevent too large downloads).
+
+Use together with `highResolution`; the return value is AND-ed with  `highResolution`.
 
 Example: 
 
     $.responsive({
-        highResolution: function(data, $el) {
-            return data.width < 800;
+        highResolution: "auto",
+        disableHighResolution: function(data, $el) {
+            return data.width >= 800;
         }
     }
+
 
 ## Passing data to the server
 

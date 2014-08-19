@@ -42,8 +42,9 @@ jQuery(document).ready(function($) {
         highResolution: false
     });
     $("img.my-image.retina").responsive({
-        highResolution: function(data, $el) {
-            return data.width < 800;
+        highResolution: "auto",
+        disableHighResolution: function(data, $el) {
+            return data.width >= 800;
         }
     });
         
