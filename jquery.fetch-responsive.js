@@ -1,15 +1,27 @@
 /*
-Fetch Responsive Image jQuery plugin
-Mediator between user interface and webserver, with the goal to get images sized to match the current state of the interface.
-Version 0.1.1
-(c) 2014 Arthur Clemens arthurclemens@gmail.com
-Released under MIT licence
-https://github.com/ArthurClemens/jquery-fetch-responsive-plugin
-*/
-(function ($) {
-    "use strict";
+ *  Project: Fetch Responsive Image jQuery plugin
+ *  Description: Mediator between user interface and webserver, with the goal to get images sized to match the current state of the interface.
+ *  Version: 0.1.1
+ *  Author: (c) 2014 Arthur Clemens arthurclemens@gmail.com
+ *  License: MIT license
+ *  URL: https://github.com/ArthurClemens/jquery-fetch-responsive-plugin
+ */
 
-    var resizeTimer,
+// https://github.com/jquery-boilerplate/jquery-boilerplate/wiki/Extending-jQuery-Boilerplate
+
+;(function ($, window, document, undefined) {
+
+    // undefined is used here as the undefined global variable in ECMAScript 3 is
+    // mutable (ie. it can be changed by someone else). undefined isn't really being
+    // passed in so we can ensure the value of it is truly undefined. In ES5, undefined
+    // can no longer be modified.
+
+    // window is passed through as local variable rather than global
+    // as this (slightly) quickens the resolution process and can be more efficiently
+    // minified (especially when both are regularly referenced in your plugin).
+
+    var pluginName = 'responsive',
+        resizeTimer,
         isListeningForResize,
         uniqueId = 1,
         uniqueDataKey = "jquery-fetch-responsive",
@@ -17,24 +29,51 @@ https://github.com/ArthurClemens/jquery-fetch-responsive-plugin
         
         // functions
         parseValue,
+        parseIntegerValue,
+        parseFloatValue,
+        parseBooleanValue,
+        parseRangeValue,
+        parseArrayValue,
         parseValues,
         purgeData,
         purgeSendData,
         createWidthList,
-        init,
-        listenForResize,
-        stopListenForResize,
-        handleResize,
-        prepareUpdate,
-        fetchData,
-        needsUpdate,
-        widthForRange,
-        widthForWidthList,
-        callServer,
-        handleReceivedUrl,
-        updateImageSrc,
-        updateImageProperties,
-        getMediaQuery;
+        listenForResize;
+
+    // The actual plugin constructor
+    function Plugin(element, options) {
+        this.element = element;
+        this.$element = $(element);
+
+        this.options = $.extend({}, $.fn[pluginName].defaults, options) ;
+        this._defaults = $.fn[pluginName].defaults;
+        this._name = pluginName;
+
+        this.init();
+    }
+
+    Plugin.prototype.init = function () {
+        var options,
+            sendData;
+        
+        options = $.extend({}, this.options, this.$element.data()); // The first object is generally empty as we don't want to alter the default options for future instances of the plugin
+        parseValues(options);
+        if (options.range) {
+            createWidthList(options);
+        }
+        purgeData(options);
+        sendData = $.extend({}, options);
+        purgeSendData(sendData);
+        
+        this.$element.attr("data-" + uniqueDataKey, uniqueId);
+        images[uniqueId++] = {
+            options: options,
+            sendData: sendData,
+            $el: this.$element
+        };
+        listenForResize();
+        prepareUpdate(this.$element, options, sendData);
+    };
 
     parseValue = function(optKey, type, opts) {
         var value,
@@ -42,43 +81,63 @@ https://github.com/ArthurClemens/jquery-fetch-responsive-plugin
         value = opts[optKey];
         if (value !== undefined && value !== "") {
             if (type === "integer") {
-                parsed = parseInt(value, 10);
+                parsed = parseIntegerValue(value);
             } else if (type === "float") {
-                parsed = parseFloat(value, 10);
+                parsed = parseFloatValue(value);
             } else if (type === "boolean") {
-                parsed = (value === true || value === "true" || value === 1 || value === "1") ? true : false;
+                parsed = parseBooleanValue(value);
             } else if (type === "range") {
-                if (typeof value === "object" && value.min !== undefined && value.max !== undefined) {
-                    parsed = value;
-                } else {
-                    var match = new RegExp(/(\d+)\s*[-, ]\s*(\d+)/).exec(value);
-                    parsed = {
-                        min: parseInt(match[1], 10),
-                        max: parseInt(match[2], 10)
-                    };
-                }
+                parsed = parseRangeValue(value);
             } else if (type === "array") {
-                var list;
-                if (Array.isArray(value)) {
-                    list = value;
-                } else {
-                    // handle list of integers
-                    list = value.split(/\s*,\s*/);
-                    if (list.length) {
-                        for (var i = 0; i<list.length; i++) {
-                            list[i] = parseInt(list[i], 10);
-                        }
-                    }
-                }
-                // sort numerically, from large to small
-                parsed = list.sort(function(a, b) {
-                    return b - a;
-                });
+                parsed = parseArrayValue(value);
             }
             if (parsed !== undefined) {
                 opts[optKey] = parsed;
             }
         }
+    };
+    
+    parseIntegerValue = function(value) {
+        return parseInt(value, 10);
+    };
+    
+    parseFloatValue = function(value) {
+        return parseFloat(value, 10);
+    };
+    
+    parseBooleanValue = function(value) {
+        return (value === true || value === "true" || value === 1 || value === "1") ? true : false;
+    };
+    
+    parseRangeValue = function(value) {
+        if (typeof value === "object" && value.min !== undefined && value.max !== undefined) {
+            return value;
+        } else {
+            var match = new RegExp(/(\d+)\s*[-, ]\s*(\d+)/).exec(value);
+            return {
+                min: parseInt(match[1], 10),
+                max: parseInt(match[2], 10)
+            };
+        }
+    };
+    
+    parseArrayValue = function(value) {
+        var list;
+        if (Array.isArray(value)) {
+            list = value;
+        } else {
+            // handle list of integers
+            list = value.split(/\s*,\s*/);
+            if (list.length) {
+                for (var i = 0; i<list.length; i++) {
+                    list[i] = parseInt(list[i], 10);
+                }
+            }
+        }
+        // sort numerically, from large to small
+        return list.sort(function(a, b) {
+            return b - a;
+        });
     };
     
     /*
@@ -130,32 +189,6 @@ https://github.com/ArthurClemens/jquery-fetch-responsive-plugin
             widths.push(parseInt(width, 10));
         }
         options.widths = widths.reverse();
-    };
-    
-    init = function (el, opts) {
-        var $el,
-            options,
-            sendData;
-        
-        $el = $(el);
-        options = $.extend({}, $.fn.responsive.defaults, opts, $el.data());
-        parseValues(options);
-        if (options.range) {
-            createWidthList(options);
-        }
-        purgeData(options);
-        
-        sendData = $.extend({}, options, $el.data());
-        purgeSendData(sendData);
-        
-        $el.attr("data-" + uniqueDataKey, uniqueId);
-        images[uniqueId++] = {
-            options: options,
-            sendData: sendData,
-            $el: $el
-        };
-        listenForResize();
-        prepareUpdate($el, options, sendData);
     };
     
     listenForResize = function() {
@@ -239,7 +272,7 @@ https://github.com/ArthurClemens/jquery-fetch-responsive-plugin
         var url;
         if (typeof(options.urlSource) === "function") {
             // direct call; no need for JSON
-            url = options.urlSource(sendData);
+            url = options.urlSource(sendData, $el);
             handleReceivedUrl($el, url, options, sendData);
         } else if (typeof(options.urlSource) === "string") {
             // assume url
@@ -312,23 +345,69 @@ https://github.com/ArthurClemens/jquery-fetch-responsive-plugin
         }
         return mediaQuery;
     };
-    
-    $.fn.responsive = function (command) {
-        return this.each(function () {
-            init(this, command);
-        });
+        
+    // You don't need to change something below:
+    // A really lightweight plugin wrapper around the constructor,
+    // preventing against multiple instantiations and allowing any
+    // public function (ie. a function whose name doesn't start
+    // with an underscore) to be called via the jQuery plugin,
+    // e.g. $(element).defaultPluginName('functionName', arg1, arg2)
+    $.fn[pluginName] = function (options) {
+        var args = arguments;
+
+        // Is the first parameter an object (options), or was omitted,
+        // instantiate a new instance of the plugin.
+        if (options === undefined || typeof options === 'object') {
+            return this.each(function () {
+
+                // Only allow the plugin to be instantiated once,
+                // so we check that the element has no plugin instantiation yet
+                if (!$.data(this, 'plugin_' + pluginName)) {
+
+                    // if it has no instance, create a new one,
+                    // pass options to our plugin constructor,
+                    // and store the plugin instance
+                    // in the elements jQuery data object.
+                    $.data(this, 'plugin_' + pluginName, new Plugin(this, options));
+                }
+            });
+
+        // If the first parameter is a string and it doesn't start
+        // with an underscore or "contains" the `init`-function,
+        // treat this as a call to a public method.
+        } else if (typeof options === 'string' && options[0] !== '_' && options !== 'init') {
+
+            // Cache the method call
+            // to make it possible
+            // to return a value
+            var returns;
+
+            this.each(function () {
+                var instance = $.data(this, 'plugin_' + pluginName);
+
+                // Tests that there's already a plugin-instance
+                // and checks that the requested public method exists
+                if (instance instanceof Plugin && typeof instance[options] === 'function') {
+
+                    // Call the method of our plugin instance,
+                    // and pass it the supplied arguments.
+                    returns = instance[options].apply(instance, Array.prototype.slice.call(args, 1));
+                }
+
+                // Allow instances to be destroyed via the 'destroy' method
+                if (options === 'destroy') {
+                  $.data(this, 'plugin_' + pluginName, null);
+                }
+            });
+
+            // If the earlier cached method
+            // gives a value back return the value,
+            // otherwise return this to preserve chainability.
+            return returns !== undefined ? returns : this;
+        }
     };
     
-    /*
-    Override default settings for plugin.
-    */
-    $.responsive = function (options) {
-        $.extend($.fn.responsive.defaults, options);
-	};
-
-    $.responsive.resizeDelay = 500;
-    
-    $.fn.responsive.defaults = {
+    $.fn[pluginName].defaults = {
         urlSource: undefined,
         range: undefined,
         stepSize: 160,
@@ -340,7 +419,10 @@ https://github.com/ArthurClemens/jquery-fetch-responsive-plugin
         },
         mediaQuery: undefined
     };
+    
+    $[pluginName] = function (options) {
+        $.extend($.fn.responsive.defaults, options);
+	};
+    $[pluginName].resizeDelay = 500;    
 
-}(jQuery));
-
-/*jslint regexp: true, browser: true */
+}(jQuery, window, document));
