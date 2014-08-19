@@ -36,6 +36,7 @@ The webserver needs to be coded separately, and not a part of this plugin. Howev
 * [Demo 2: detect breakpoint changes]( http://arthurclemens.github.io/jquery-fetch-responsive-plugin/demo2.html)
 * [Demo 3: create widths from range]( http://arthurclemens.github.io/jquery-fetch-responsive-plugin/demo3.html)
 * [Demo 4: stress test]( http://arthurclemens.github.io/jquery-fetch-responsive-plugin/demo4.html)
+* [Demo 5: high resolution images]( http://arthurclemens.github.io/jquery-fetch-responsive-plugin/demo5.html)
 
 
 ## Usage
@@ -221,6 +222,7 @@ Data is sent as JSON GET request with key `request` and contains:
 * `width`
 * `height` (may be undefined)
 * `sizeId`
+* `highResolution` (if set)
 * plus any other parameter that is set in data attributes or the options object
 
 Example URL:
@@ -231,6 +233,8 @@ Example URL:
 
 #### urlSource as Javascript function
 
+*function* - params *data, $el*
+
 This function is called to fetch the image url instead. 
 
 Data is sent as Javascript object and contains:
@@ -238,6 +242,7 @@ Data is sent as Javascript object and contains:
 * `width`
 * `height` (may be undefined)
 * `sizeId`
+* `highResolution` (if set)
 * plus any other parameter that is set in data attributes or the options object
 
 The function is expected to return a URL.<br />
@@ -246,7 +251,7 @@ In case the image URL is updated in the `update` function, at least a width or u
 Example Function:
 
     $.responsive({
-        urlSource: function(data) {
+        urlSource: function(data, $el) {
             return "image-" + data.width + ".jpg";
         }
     });
@@ -297,6 +302,36 @@ Example:
         }
     });
 
+
+### highResolution
+
+*boolean* or *"auto"* or *function*
+
+#### highResolution as boolean
+
+Pass this as parameter to the server; the calculated width does not change (the server needs to serve a high resolution sized image).
+
+    <img data-high-resolution="1" />
+    
+#### highResolution as string "auto"
+
+Detect if the display is a high resolution and pass the result to the server.
+
+    <img data-high-resolution="auto" />
+
+#### highResolution as function
+
+*function* - params *data, $el*
+
+In options object only. Use a function to conditionally request a high resolution image. For instance for large screen sizes high res can be disabled to prevent large downloads.
+
+Example: 
+
+    $.responsive({
+        highResolution: function(data, $el) {
+            return data.width < 800;
+        }
+    }
 
 ## Passing data to the server
 

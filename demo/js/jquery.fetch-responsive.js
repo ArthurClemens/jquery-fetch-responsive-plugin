@@ -1,7 +1,7 @@
 /*
  *  Project: Fetch Responsive Image jQuery plugin
  *  Description: Mediator between user interface and webserver, with the goal to get images sized to match the current state of the interface.
- *  Version: 0.1.2
+ *  Version: 0.1.1
  *  Author: (c) 2014 Arthur Clemens arthurclemens@gmail.com
  *  License: MIT license
  *  URL: https://github.com/ArthurClemens/jquery-fetch-responsive-plugin
