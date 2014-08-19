@@ -44,7 +44,7 @@ body:after {content:"XS"; display:none;}</span>
 etcetera
 </pre>
         <p>
-            When option <code>media-query</code> is set to true and the current media query has changed, the width of the element is detected (using parameter function <code>get-width</code> or else <code>$(el).width()</code>), and that width is passed to the server:
+            When option <code>media-query</code> is set to true and the current media query has changed, the width of the element is calculated and passed to the server.
 		</p>
 
 <pre>
@@ -86,6 +86,9 @@ $.responsive({
             <li>
                 <a href="demo4.html">Demo 4: stress test</a>
             </li>
+            <li>
+                <a href="demo5.html">Demo 5: high resolution images</a>
+            </li>
         </ul>
 	</div>
 	
@@ -96,7 +99,7 @@ $.responsive({
 	</div>
 	
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-	<script src="js/jquery.fetch-responsive.min.js" type="text/javascript"></script>
+	<script src="js/jquery.fetch-responsive.js" type="text/javascript"></script>
 	<script src="js/demo2.js" type="text/javascript"></script>
 </body>
 </html>

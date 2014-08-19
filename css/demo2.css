@@ -4,7 +4,8 @@ head {font-family:"XS";}
 body:after {content:"XS"; display:none;}
 
 .container .my-image {
-    width: 320px;
+    max-width: 320px;
+    width: 100%;
 }
 
 @media (min-width: 480px) {
@@ -12,7 +13,7 @@ body:after {content:"XS"; display:none;}
 	body:after{content:"S";}
 	
     .container .my-image {
-        width: 480px;
+        max-width: 480px;
     }
 }
 
@@ -21,7 +22,7 @@ body:after {content:"XS"; display:none;}
 	body:after {content:"M";}
 	
     .container .my-image {
-        width: 640px;
+        max-width: 640px;
     }
 }
 
@@ -30,7 +31,7 @@ body:after {content:"XS"; display:none;}
 	body:after {content:"L";}
 	
     .container .my-image {
-        width: 800px;
+        max-width: 800px;
     }
 }
 
@@ -39,7 +40,7 @@ body:after {content:"XS"; display:none;}
 	body:after {content:"XL";}
 	
     .container .my-image {
-        width: 960px;
+        max-width: 960px;
     }
 }
 
@@ -48,6 +49,6 @@ body:after {content:"XS"; display:none;}
 	body:after {content:"XXL";}
 	
     .container .my-image {
-        width: 1120px;
+        max-width: 1120px;
     }
 }
