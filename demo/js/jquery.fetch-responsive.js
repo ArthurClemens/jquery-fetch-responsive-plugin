@@ -1,7 +1,7 @@
 /*
  *  Project: Fetch Responsive Image jQuery plugin
  *  Description: Mediator between user interface and webserver, with the goal to get images sized to match the current state of the interface.
- *  Version: 0.1.1
+ *  Version: 0.1.2
  *  Author: (c) 2014 Arthur Clemens arthurclemens@gmail.com
  *  License: MIT license
  *  URL: https://github.com/ArthurClemens/jquery-fetch-responsive-plugin
@@ -361,12 +361,14 @@
         }
         return mediaQuery;
     };
-    
+
     /*
-    http://stackoverflow.com/a/20413768/505157
+    https://github.com/LeaVerou/dpi/blob/gh-pages/dpi.js
     */
     isHighResolution = function() {
-        return ((window.matchMedia && (window.matchMedia('only screen and (min-resolution: 124dpi), only screen and (min-resolution: 1.3dppx), only screen and (min-resolution: 48.8dpcm)').matches || window.matchMedia('only screen and (-webkit-min-device-pixel-ratio: 1.3), only screen and (-o-min-device-pixel-ratio: 2.6/2), only screen and (min--moz-device-pixel-ratio: 1.3), only screen and (min-device-pixel-ratio: 1.3)').matches)) || (window.devicePixelRatio && window.devicePixelRatio > 1.3));
+        var dppx = window.devicePixelRatio ||
+    (window.matchMedia && window.matchMedia("(min-resolution: 2dppx), (-webkit-min-device-pixel-ratio: 1.5),(-moz-min-device-pixel-ratio: 1.5),(min-device-pixel-ratio: 1.5)").matches? 2 : 1) || 1;
+        return dppx > 1.5;
     };
     
     // You don't need to change something below:
