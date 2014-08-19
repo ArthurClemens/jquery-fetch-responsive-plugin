@@ -34,12 +34,14 @@
 		    In this demo the check for high resolution is a function; at size 800 and higher no high resolution image should be loaded:
 		</p>
 <pre>
-$.responsive({
-    $("img.my-image.retina").responsive({
-        highResolution: function(data, $el) {
-            return data.width < 800;
-        }
-    });
+$("img.my-image.no-retina").responsive({
+    highResolution: false
+});
+$("img.my-image.retina").responsive({
+    highResolution: function(data, $el) {
+        return data.width < 800;
+    }
+});
 </pre>
     </div>
 
