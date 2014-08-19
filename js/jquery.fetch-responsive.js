@@ -1,7 +1,7 @@
 /*
  *  Project: Fetch Responsive Image jQuery plugin
  *  Description: Mediator between user interface and webserver, with the goal to get images sized to match the current state of the interface.
- *  Version: 0.1.1
+ *  Version: 0.1.3
  *  Author: (c) 2014 Arthur Clemens arthurclemens@gmail.com
  *  License: MIT license
  *  URL: https://github.com/ArthurClemens/jquery-fetch-responsive-plugin
@@ -34,6 +34,7 @@
         parseBooleanValue,
         parseRangeValue,
         parseArrayValue,
+        parseHighResolutionValue,
         parseValues,
         purgeData,
         purgeSendData,
@@ -91,6 +92,8 @@
                 parsed = parseRangeValue(value);
             } else if (type === "array") {
                 parsed = parseArrayValue(value);
+            } else if (type === "highResolution") {
+                parsed = parseHighResolutionValue(value);
             }
             if (parsed !== undefined) {
                 opts[optKey] = parsed;
@@ -141,6 +144,14 @@
         });
     };
     
+    parseHighResolutionValue = function(value) {
+        if (value === "auto") {
+            return $.responsive._detectedHighResolution;
+        } else {
+            return parseBooleanValue(value);
+        }
+    };
+    
     /*
     Parses attribute values other than string and function.
     */
@@ -150,6 +161,7 @@
         parseValue("range", "range", opts);
         parseValue("stepSize", "integer", opts);
         parseValue("ratio", "float", opts);
+        parseValue("highResolution", "highResolution", opts);
     };
     
     /*
@@ -172,6 +184,7 @@
         delete data.update;
         delete data.getWidth;
         delete data.mediaQuery;
+        delete data.disableHighResolution;
     };
     
     createWidthList = function(options) {
@@ -221,16 +234,6 @@
         }  
     };
     
-    getHighResolutionValue = function(value, data, $el) {
-        if (typeof value === "function") {
-            return value(data, $el);
-        } else if (value === "auto") {
-            return $.responsive._detectedHighResolution;
-        } else {
-            return parseBooleanValue(value);
-        }
-    };
-    
     prepareUpdate = function($el, options, sendData) {
         var windowWidth,
             sizeId,
@@ -254,10 +257,8 @@
             sendDataCopy.sizeId = sizeId;
             sendDataCopy.width = width;
             sendDataCopy.height = height;
-            if (options.highResolution !== undefined) {
-                // would be nice if this was optimized a bit
-                // for static values
-                sendDataCopy.highResolution = getHighResolutionValue(options.highResolution, sendDataCopy, $el);
+            if (options.disableHighResolution !== undefined) {
+                sendDataCopy.highResolution = sendDataCopy.highResolution && !options.disableHighResolution(sendDataCopy, $el);
             }
             fetchData($el, options, sendDataCopy);
         }
@@ -443,7 +444,8 @@
             return parseInt($el.css("max-width"), 10) || $el.width();
         },
         mediaQuery: undefined,
-        highResolution: undefined
+        highResolution: undefined,
+        disableHighResolution: undefined
     };
     
     $[pluginName] = function (options) {

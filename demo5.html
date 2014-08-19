@@ -31,15 +31,16 @@
 		    Note the smaller range of image sizes - because the image is half the screen width, the loaded images can be smaller.
 		</p>
 		<p>
-		    In this demo the check for high resolution is a function; at size 800 and higher no high resolution image should be loaded:
+		    In this demo we disable high resolution images for widths 800 and higher:
 		</p>
 <pre>
 $("img.my-image.no-retina").responsive({
     highResolution: false
 });
 $("img.my-image.retina").responsive({
-    highResolution: function(data, $el) {
-        return data.width < 800;
+    highResolution: "auto",
+    disableHighResolution: function(data, $el) {
+        return data.width >= 800;
     }
 });
 </pre>
