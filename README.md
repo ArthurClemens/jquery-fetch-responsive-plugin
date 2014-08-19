@@ -74,6 +74,19 @@ Optionally set global options first, see below.
 
 ## Instance options
 
+### All options
+
+* [getWidth](#getwidth)
+* [highResolution](#highresolution)
+* [mediaQuery](#mediaquery)
+* [range](#range)
+* [ratio](#ratio)
+* [stepSize](#stepsize)
+* [update](#update)
+* [urlSource](#urlsource)
+* [widths](#widths)
+
+
 ### Size options
 
 Either use:
