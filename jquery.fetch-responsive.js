@@ -1,11 +1,11 @@
 /*
- *  Project: Fetch Responsive Image jQuery plugin
- *  Description: Mediator between user interface and webserver, with the goal to get images sized to match the current state of the interface.
- *  Version: 0.1.3
- *  Author: (c) 2014 Arthur Clemens arthurclemens@gmail.com
- *  License: MIT license
- *  URL: https://github.com/ArthurClemens/jquery-fetch-responsive-plugin
- */
+*  Project: Fetch Responsive Image jQuery plugin
+*  Description: Mediator between user interface and webserver, with the goal to get images sized to match the current state of the interface.
+*  Version: 0.1.4
+*  Author: (c) 2014 Arthur Clemens arthurclemens@gmail.com
+*  License: MIT license
+*  URL: https://github.com/ArthurClemens/jquery-fetch-responsive-plugin
+*/
 
 // https://github.com/jquery-boilerplate/jquery-boilerplate/wiki/Extending-jQuery-Boilerplate
 
@@ -162,6 +162,7 @@
         parseValue("stepSize", "integer", opts);
         parseValue("ratio", "float", opts);
         parseValue("highResolution", "highResolution", opts);
+        parseValue("highResolutionMaximum", "integer", opts);
     };
     
     /*
@@ -184,7 +185,7 @@
         delete data.update;
         delete data.getWidth;
         delete data.mediaQuery;
-        delete data.disableHighResolution;
+        delete data.highResolutionMaximum;
     };
     
     createWidthList = function(options) {
@@ -257,8 +258,8 @@
             sendDataCopy.sizeId = sizeId;
             sendDataCopy.width = width;
             sendDataCopy.height = height;
-            if (options.disableHighResolution !== undefined) {
-                sendDataCopy.highResolution = sendDataCopy.highResolution && !options.disableHighResolution(sendDataCopy, $el);
+            if (options.highResolutionMaximum !== undefined) {
+                sendDataCopy.highResolution = sendDataCopy.highResolution && (width < options.highResolutionMaximum);
             }
             fetchData($el, options, sendDataCopy);
         }

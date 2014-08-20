@@ -76,9 +76,9 @@ Optionally set global options first, see below.
 
 ### All options
 
-* [disableHighResolution](#disablehighresolution)
 * [getWidth](#getwidth)
 * [highResolution](#highresolution)
+* [highResolutionMaximum](#highresolutionmaximum)
 * [mediaQuery](#mediaquery)
 * [range](#range)
 * [ratio](#ratio)
@@ -333,21 +333,23 @@ Detect if the display is a high resolution and pass the result to the server.
 
     <img data-high-resolution="auto" />
 
-### disableHighResolution
+### highResolutionMaximum
 
-*function* - params *data, $el* - return *boolean*
+*integer*
 
-In options object only. Use this function to conditionally request a high resolution image, and to disable it for large screens (to prevent too large downloads).
+Conditionally disable high resolution images, for example to prevent too large downloads. Pass the maximum width to use high resolution images; at greater widths high resolution will be disabled.
 
-Use together with `highResolution`; the return value is AND-ed with  `highResolution`.
+Use together with `highResolution`.
 
-Example: 
+Example:
+
+    <img data-high-resolution="auto" data-high-resolution-maximum="1024" />
+
+or
 
     $.responsive({
         highResolution: "auto",
-        disableHighResolution: function(data, $el) {
-            return data.width >= 800;
-        }
+        highResolutionMaximum: "1024"
     }
 
 

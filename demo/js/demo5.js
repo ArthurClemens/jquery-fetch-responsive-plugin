@@ -38,14 +38,5 @@ jQuery(document).ready(function($) {
         }
     });
     
-    $("img.my-image.no-retina").responsive({
-        highResolution: false
-    });
-    $("img.my-image.retina").responsive({
-        highResolution: "auto",
-        disableHighResolution: function(data, $el) {
-            return data.width >= 800;
-        }
-    });
-        
+    $("img.my-image").responsive();
 });
