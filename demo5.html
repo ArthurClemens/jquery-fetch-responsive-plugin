@@ -31,18 +31,10 @@
 		    Note the smaller range of image sizes - because the image is half the screen width, the loaded images can be smaller.
 		</p>
 		<p>
-		    In this demo we disable high resolution images for widths 800 and higher:
+		    In this demo we disable high resolution images for widths greater than 800:
 		</p>
 <pre>
-$("img.my-image.no-retina").responsive({
-    highResolution: false
-});
-$("img.my-image.retina").responsive({
-    highResolution: "auto",
-    disableHighResolution: function(data, $el) {
-        return data.width >= 800;
-    }
-});
+&lt;img class="my-image retina" data-high-resolution="auto" data-high-resolution-maximum="800" />
 </pre>
     </div>
 
@@ -58,7 +50,7 @@ $("img.my-image.retina").responsive({
                     </div>
                 </div>
                 <figure>
-                    <img class="my-image no-retina" />
+                    <img class="my-image no-retina" data-high-resolution="0" />
                 </figure>
             </div>
             <div class="column retina">
@@ -71,7 +63,7 @@ $("img.my-image.retina").responsive({
                     </div>
                 </div>
                 <figure>
-                    <img class="my-image retina" />
+                    <img class="my-image retina" data-high-resolution="auto" data-high-resolution-maximum="800" />
                 </figure>
             </div>
         </div>
