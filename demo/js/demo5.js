@@ -4,15 +4,14 @@ jQuery(document).ready(function($) {
     var evenRows = function() {
         var highest = 0;
         $(".column .note").css({
-            "min-height": "auto",
             height: "auto"
         });
         setTimeout(function() {
             $(".column .note").each(function() {
-                highest = Math.max(highest, $(this).height(true));
+                var h = $(this).outerHeight();
+                highest = Math.max(highest, h);
             });
             $(".column .note").css({
-                "min-height": highest,
                 height: highest
             });
         }, 0);

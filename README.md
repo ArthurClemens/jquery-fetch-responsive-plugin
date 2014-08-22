@@ -37,6 +37,7 @@ The webserver needs to be coded separately, and not a part of this plugin. Howev
 * [Demo 3: create widths from range]( http://arthurclemens.github.io/jquery-fetch-responsive-plugin/demo3.html)
 * [Demo 4: stress test]( http://arthurclemens.github.io/jquery-fetch-responsive-plugin/demo4.html)
 * [Demo 5: high resolution images]( http://arthurclemens.github.io/jquery-fetch-responsive-plugin/demo5.html)
+* [Demo 6: Google Static Map image]( http://arthurclemens.github.io/jquery-fetch-responsive-plugin/demo6.html)
 
 
 ## Usage
